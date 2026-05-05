@@ -121,6 +121,9 @@ export const eventsTable = pgTable("events", {
 
   location: text("location"),
 
+  confirmationDeadline: timestamp("confirmation_deadline"),
+  imageUrl: text("image_url"),
+
   // Configuração
   maxAdults: integer("max_adults").notNull(),
   allowChildren: boolean("allow_children").notNull().default(false),
