@@ -2,11 +2,10 @@
 
 import {
   CalendarDays,
-  Diamond,
+  CalendarHeart,
+  // Diamond,
   LayoutDashboard,
   LogOut,
-  Stethoscope,
-  UserRound,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -43,19 +42,14 @@ const items = [
     icon: LayoutDashboard,
   },
   {
-    title: "Agendamentos",
-    url: "/appointments",
+    title: "Calendário",
+    url: "/calendar",
     icon: CalendarDays,
   },
   {
-    title: "Médicos",
-    url: "/doctors",
-    icon: Stethoscope,
-  },
-  {
-    title: "Pacientes",
-    url: "/patients",
-    icon: UserRound,
+    title: "Eventos",
+    url: "/events",
+    icon: CalendarHeart,
   },
 ];
 
@@ -67,7 +61,7 @@ export function AppSidebar() {
   const handleSignOut = async () => {
     await authClient.signOut({
       fetchOptions: {
-        credentials: "include", // ADICIONA ISSO
+        credentials: "include",
         onSuccess: () => {
           router.push("/authentication");
         },
@@ -90,9 +84,7 @@ export function AppSidebar() {
 
   return (
     <Sidebar collapsible="icon">
-      {/* <SidebarHeader className="border-b p-4"> */}
       <SidebarHeader className="m-0 p-0">
-        {/* <Image src="/Logo.svg" alt="Clinic Z" width={207} height={32} /> */}
         <SidebarHeaderLogo />
       </SidebarHeader>
       <SidebarContent>
@@ -113,7 +105,7 @@ export function AppSidebar() {
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>
-        <SidebarGroup>
+        {/* <SidebarGroup>
           <SidebarGroupLabel>Outros</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -130,7 +122,7 @@ export function AppSidebar() {
               </SidebarMenuItem>
             </SidebarMenu>
           </SidebarGroupContent>
-        </SidebarGroup>
+        </SidebarGroup> */}
       </SidebarContent>
       <SidebarFooter>
         <SidebarMenu>
@@ -146,14 +138,14 @@ export function AppSidebar() {
 
                   <div className="flex flex-col overflow-hidden">
                     <p className="truncate text-sm">
-                      {/* {session.data?.user?.clinic?.name} */}
+                      {session.data?.user?.name}
                     </p>
 
                     <p
                       className="text-muted-foreground truncate text-sm"
-                      title={session.data?.user.email}
+                      title={session.data?.user?.email}
                     >
-                      {session.data?.user.email}
+                      {session.data?.user?.email}
                     </p>
                   </div>
                 </SidebarMenuButton>
