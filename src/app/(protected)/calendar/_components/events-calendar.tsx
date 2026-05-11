@@ -12,7 +12,7 @@ interface EventsCalendarProps {
     id: string;
     title: string;
     date: Date;
-    location?: string;
+    location?: string | null;
   }[];
 }
 
