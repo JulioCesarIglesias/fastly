@@ -7,8 +7,9 @@ import * as schema from "@/db/schema";
 export const auth = betterAuth({
   trustedOrigins: [
     "http://localhost:3000",
-    "https://festly.com.br",
-    // "https://*.festly.com.br",
+    // "https://festly.com.br",
+    "https://fastly-ten.vercel.app",
+    "https://*.vercel.app",
   ],
   database: drizzleAdapter(db, {
     provider: "pg", // or "sqlite" or "mysql"
