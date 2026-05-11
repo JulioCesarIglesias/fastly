@@ -1,6 +1,7 @@
 "use client";
 
-import ptBrLocale from "@fullcalendar/core/locales/pt-br";
+// import ptBrLocale from "@fullcalendar/core/locales/pt-br";
+import ptBrLocale from "@fullcalendar/core/locales/pt-br.js";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import FullCalendar from "@fullcalendar/react";
 import dayjs from "dayjs";
