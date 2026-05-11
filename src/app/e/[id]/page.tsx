@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { CalendarDays, MapPin, Users } from "lucide-react";
+import { CalendarDays, MapPin } from "lucide-react";
 import { notFound } from "next/navigation";
 
 import { Separator } from "@/components/ui/separator";
