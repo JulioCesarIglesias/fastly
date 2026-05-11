@@ -53,7 +53,7 @@ const EventsTableActions = ({ event }: EventsTableActionsProps) => {
   };
 
   return (
-    <>
+    <div onClick={(e) => e.stopPropagation()}>
       <Dialog open={upsertDialogIsOpen} onOpenChange={setUpsertDialogIsOpen}>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -118,7 +118,7 @@ const EventsTableActions = ({ event }: EventsTableActionsProps) => {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
-    </>
+    </div>
   );
 };
 

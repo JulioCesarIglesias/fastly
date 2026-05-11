@@ -3,7 +3,6 @@ import { PartyPopper } from "lucide-react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
-import { DataTable } from "@/components/ui/data-table";
 import {
   PageActions,
   PageContainer,
@@ -18,7 +17,7 @@ import { eventsTable } from "@/db/schema";
 import { auth } from "@/lib/auth";
 
 import AddEventButton from "./_components/add-event-button";
-import { eventTableColumns } from "./_components/table-columns";
+import EventsTable from "./_components/events-table";
 
 const EventsPage = async () => {
   const session = await auth.api.getSession({
@@ -58,7 +57,8 @@ const EventsPage = async () => {
             </p>
           </div>
         ) : (
-          <DataTable columns={eventTableColumns} data={events} />
+          // <DataTable columns={eventTableColumns} data={events} />
+          <EventsTable events={events} />
         )}
       </PageContent>
     </PageContainer>

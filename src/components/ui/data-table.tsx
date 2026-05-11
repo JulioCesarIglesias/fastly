@@ -38,6 +38,7 @@ import { DataTablePagination } from "./data-table-pagination";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  onRowClick?: (row: TData) => void;
 }
 
 /* -------------------- */
@@ -63,6 +64,7 @@ function useDebounce<T>(value: T, delay: number) {
 export function DataTable<TData, TValue>({
   columns,
   data,
+  onRowClick,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -169,7 +171,8 @@ export function DataTable<TData, TValue>({
             <Search className="text-muted-foreground absolute top-2.5 left-2 h-4 w-4" />
 
             <Input
-              className="w-[250px] pl-8"
+              // className="w-[250px] pl-8"
+              className="pl-8"
               placeholder="Pesquisar..."
               value={globalFilter ?? ""}
               onChange={(event) => setGlobalFilter(event.target.value)}
@@ -232,9 +235,25 @@ export function DataTable<TData, TValue>({
                 <TableRow
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
+                  className="hover:bg-muted/50 cursor-pointer transition-colors"
+                  onClick={() => onRowClick?.(row.original)}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell
+                      key={cell.id}
+                      onClick={(e) => {
+                        const target = e.target as HTMLElement;
+
+                        if (
+                          target.closest("button") ||
+                          target.closest('[role="checkbox"]') ||
+                          target.closest("a") ||
+                          target.closest('[data-no-row-click="true"]')
+                        ) {
+                          e.stopPropagation();
+                        }
+                      }}
+                    >
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext(),
@@ -249,7 +268,7 @@ export function DataTable<TData, TValue>({
                   colSpan={columns.length}
                   className="h-24 text-center"
                 >
-                  Nenhum resultado encontrado.
+                  Nenhum resultado.
                 </TableCell>
               </TableRow>
             )}

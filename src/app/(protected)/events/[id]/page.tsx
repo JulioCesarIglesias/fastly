@@ -191,7 +191,7 @@ const EventPage = async ({ params }: EventPageProps) => {
           </Card>
 
           {/* CONTEÚDO */}
-          <div className="space-y-6">
+          <div className="min-w-0 space-y-6">
             {/* MÉTRICAS */}
             <div className="grid gap-4 sm:grid-cols-2 2xl:grid-cols-4">
               <Card>
@@ -268,11 +268,13 @@ const EventPage = async ({ params }: EventPageProps) => {
               </Card>
             ) : (
               <Card className="overflow-hidden">
-                <CardContent className="p-4">
-                  <DataTable
-                    columns={confirmationsTableColumns}
-                    data={confirmations}
-                  />
+                <CardContent className="px-5">
+                  <div className="overflow-x-auto">
+                    <DataTable
+                      columns={confirmationsTableColumns}
+                      data={confirmations}
+                    />
+                  </div>
                 </CardContent>
               </Card>
             )}
