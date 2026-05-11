@@ -133,8 +133,9 @@ export const eventsTable = pgTable("events", {
 
   createdAt: timestamp("created_at").notNull().defaultNow(),
   updatedAt: timestamp("updated_at")
-    .notNull()
-    .$onUpdate(() => new Date()),
+    .defaultNow()
+    .$onUpdate(() => new Date())
+    .notNull(),
 });
 
 export const eventsTableRelations = relations(eventsTable, ({ one, many }) => ({
@@ -175,6 +176,7 @@ export const confirmationsTable = pgTable(
     createdAt: timestamp("created_at").notNull().defaultNow(),
     updatedAt: timestamp("updated_at")
       .notNull()
+      .defaultNow()
       .$onUpdate(() => new Date()),
   },
   (table) => ({

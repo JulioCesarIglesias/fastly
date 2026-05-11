@@ -120,3 +120,77 @@
     @apply bg-background text-foreground;
   }
 }
+
+/* Título */
+.fc .fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: hsl(var(--foreground));
+}
+
+/* Botões do topo */
+.fc .fc-button {
+  background: var(--primary) !important;
+  border: none !important;
+  color: var(--primary-foreground) !important;
+  box-shadow: none !important;
+  transition: all 0.2s ease;
+}
+
+.fc .fc-button:hover {
+  background: hsl(var(--primary-foreground) / 0.9) !important;
+  color: var(--primary) !important;
+}
+
+.fc .fc-button:disabled {
+  opacity: 0.5;
+}
+
+/* Dia atual */
+.fc .fc-day-today {
+  background: hsl(var(--primary) / 0.08) !important;
+}
+
+/* Eventos */
+.fc .fc-daygrid-event {
+  background: hsl(var(--primary)) !important;
+  border: none !important;
+  border-radius: 10px !important;
+  padding: 2px 6px !important;
+}
+
+/* Texto do evento */
+.fc .fc-event-title {
+  color: hsl(var(--primary-foreground)) !important;
+  font-weight: 500;
+}
+
+/* Grid */
+.fc .fc-daygrid-day-frame {
+  min-height: 100px;
+}
+
+/* Bordas */
+.fc-theme-standard td,
+.fc-theme-standard th,
+.fc-theme-standard .fc-scrollgrid {
+  /* border-color: hsl(var(--border)); */
+}
+
+/* Cabeçalho dos dias */
+.fc .fc-col-header-cell-cushion {
+  color: hsl(var(--muted-foreground));
+  font-weight: 600;
+  text-decoration: none;
+}
+
+/* Número dos dias */
+.fc .fc-daygrid-day-number {
+  color: hsl(var(--foreground));
+  text-decoration: none;
+}
+
+/* Hover nos dias */
+.fc .fc-daygrid-day:hover {
+  background: hsl(var(--muted) / 0.4);
+}
