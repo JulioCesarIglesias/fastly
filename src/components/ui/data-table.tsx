@@ -13,16 +13,17 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
-import { Search } from "lucide-react"; // Columns3Cog
+import { FileDown, FileText, Search } from "lucide-react"; // Columns3Cog
 import * as React from "react";
 
+// import * as XLSX from "xlsx";
 // import { Button } from "@/components/ui/button";
-// import {
-//   DropdownMenu,
-//   DropdownMenuCheckboxItem,
-//   DropdownMenuContent,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuCheckboxItem,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import {
   Table,
@@ -32,39 +33,26 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useDebounce } from "@/hooks/use-debounce";
 
+import { Button } from "./button";
 import { DataTablePagination } from "./data-table-pagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   onRowClick?: (row: TData) => void;
-}
 
-/* -------------------- */
-/* debounce hook */
-/* -------------------- */
-
-function useDebounce<T>(value: T, delay: number) {
-  const [debouncedValue, setDebouncedValue] = React.useState(value);
-
-  React.useEffect(() => {
-    const handler = setTimeout(() => {
-      setDebouncedValue(value);
-    }, delay);
-
-    return () => {
-      clearTimeout(handler);
-    };
-  }, [value, delay]);
-
-  return debouncedValue;
+  showExport?: boolean;
+  exportFileName?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   onRowClick,
+  showExport,
+  exportFileName,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
@@ -161,6 +149,61 @@ export function DataTable<TData, TValue>({
     getFilteredRowModel: getFilteredRowModel(),
   });
 
+  // Exportar para Excel
+  // const handleExportExcel = () => {
+  //   const worksheet = XLSX.utils.json_to_sheet(data);
+
+  //   const workbook = XLSX.utils.book_new();
+
+  //   XLSX.utils.book_append_sheet(workbook, worksheet, "Dados");
+
+  //   XLSX.writeFile(workbook, `${exportFileName ?? "tabela"}.xlsx`);
+  // };
+
+  // Exportar para PDF
+  const handleExportPDF = async () => {
+    const jsPDFModule = await import("jspdf");
+    const autoTableModule = await import("jspdf-autotable");
+
+    const jsPDF = jsPDFModule.default;
+    const autoTable = autoTableModule.default;
+
+    const doc = new jsPDF();
+
+    const exportableColumns = columns.filter(
+      (column) => column.id !== "actions",
+    );
+
+    const tableHeaders = exportableColumns.map(
+      (column) =>
+        (column.meta as { exportLabel?: string })?.exportLabel ??
+        String(column.id),
+    );
+
+    const tableRows = data.map((item) =>
+      exportableColumns.map((column) => {
+        const key = column.id as string;
+
+        const meta = column.meta as {
+          exportValue?: (row: TData) => unknown;
+        };
+
+        if (meta?.exportValue) {
+          return String(meta.exportValue(item));
+        }
+
+        return String((item as Record<string, unknown>)[key] ?? "");
+      }),
+    );
+
+    autoTable(doc, {
+      head: [tableHeaders],
+      body: tableRows,
+    });
+
+    doc.save(`${exportFileName ?? "tabela"}.pdf`);
+  };
+
   return (
     <div>
       {/* Toolbar */}
@@ -205,6 +248,35 @@ export function DataTable<TData, TValue>({
                 ))}
             </DropdownMenuContent>
           </DropdownMenu> */}
+
+          {/* Type download */}
+          {showExport && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="outline">
+                  <FileDown className="h-4 w-4" />
+                </Button>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent align="end">
+                {/* <DropdownMenuCheckboxItem
+                  onClick={handleExportExcel}
+                  className="pl-2"
+                >
+                  <FileSpreadsheet className="h-4 w-4" />
+                  Exportar para Excel
+                </DropdownMenuCheckboxItem> */}
+
+                <DropdownMenuCheckboxItem
+                  onClick={handleExportPDF}
+                  className="pl-2"
+                >
+                  <FileText className="h-4 w-4" />
+                  Exportar para PDF
+                </DropdownMenuCheckboxItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
       </div>
 

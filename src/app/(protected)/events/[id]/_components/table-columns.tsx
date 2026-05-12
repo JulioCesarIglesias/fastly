@@ -14,6 +14,9 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
     // Name
     id: "name",
     accessorKey: "name",
+    meta: {
+      exportLabel: "Nome",
+    },
     header: ({ column }) => (
       <div className="text-left">
         <Button
@@ -36,6 +39,12 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
   {
     id: "phone",
     accessorKey: "phone",
+    meta: {
+      exportLabel: "Telefone",
+      exportValue: (row: Confirmation) => {
+        return formatPhoneNumber(row.phone);
+      },
+    },
     header: ({ column }) => {
       return (
         <div className="text-left">
@@ -59,6 +68,9 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
   {
     id: "adultsCount",
     accessorKey: "adultsCount",
+    meta: {
+      exportLabel: "Acompanhantes (Adultos)",
+    },
     header: ({ column }) => (
       <div className="text-left">
         <Button
@@ -83,6 +95,9 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
   {
     id: "childrenCount",
     accessorKey: "childrenCount",
+    meta: {
+      exportLabel: "Crianças",
+    },
     header: ({ column }) => (
       <div className="text-left">
         <Button
@@ -103,6 +118,15 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
   {
     id: "totalCount",
     accessorKey: "totalCount",
+    meta: {
+      exportLabel: "Total",
+      exportValue: (row: Confirmation) => {
+        const adultsCount = row.adultsCount || 0;
+        const childrenCount = row.childrenCount || 0;
+
+        return adultsCount + childrenCount + 1;
+      },
+    },
     header: ({ column }) => (
       <div className="text-left">
         <Button
@@ -117,9 +141,8 @@ export const confirmationsTableColumns: ColumnDef<Confirmation>[] = [
     cell: ({ row }) => {
       const adultsCount = row.original.adultsCount || 0;
       const childrenCount = row.original.childrenCount || 0;
-      return (
-        <div className="text-right">{adultsCount + childrenCount + 1}</div>
-      );
+      const total = adultsCount + childrenCount + 1;
+      return <div className="text-right">{total}</div>;
     },
   },
 ];

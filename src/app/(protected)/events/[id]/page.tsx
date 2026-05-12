@@ -273,6 +273,8 @@ const EventPage = async ({ params }: EventPageProps) => {
                     <DataTable
                       columns={confirmationsTableColumns}
                       data={confirmations}
+                      showExport
+                      exportFileName={`Confirmações - ${event.title}`}
                     />
                   </div>
                 </CardContent>
